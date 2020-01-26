@@ -1,10 +1,10 @@
 import * as PIXI from "pixi.js";
 import VelocitySprite from "./velocity-sprite";
-import { World, InputEvent } from "./index";
+import { InputEvent } from "./index";
 
 function updateCircle(
   sprite: VelocitySprite,
-  world: PIXI.Container,
+  world: PIXI.Rectangle,
   delta: number
 ): void {
   const newX = sprite.x + sprite.vx * delta;
