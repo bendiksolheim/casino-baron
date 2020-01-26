@@ -43382,7 +43382,55 @@ class AbstractScene {
 }
 
 exports.default = AbstractScene;
-},{}],"src/engine/velocity-sprite.ts":[function(require,module,exports) {
+},{}],"src/scenes/menu-scene.ts":[function(require,module,exports) {
+"use strict";
+
+var __importStar = this && this.__importStar || function (mod) {
+  if (mod && mod.__esModule) return mod;
+  var result = {};
+  if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+  result["default"] = mod;
+  return result;
+};
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+const PIXI = __importStar(require("pixi.js"));
+
+const scene_1 = __importDefault(require("../engine/scene"));
+
+class MenuScene extends scene_1.default {
+  setup(sceneContainer, loader) {
+    const newGame = new PIXI.Text("New Game", {
+      fontFamily: "Arial",
+      fontSize: 24,
+      fill: 0xffffff,
+      align: "center"
+    });
+    newGame.anchor.set(0.5);
+    newGame.x = this.app.screen.width / 2;
+    newGame.y = this.app.screen.height / 2;
+    newGame.interactive = true;
+    newGame.addListener("pointerup", () => {
+      this.sceneSwitcher("main");
+    });
+    sceneContainer.addChild(newGame);
+  }
+
+  sceneUpdate(delta) {}
+
+}
+
+exports.default = MenuScene;
+},{"pixi.js":"node_modules/pixi.js/lib/pixi.es.js","../engine/scene":"src/engine/scene.ts"}],"src/engine/velocity-sprite.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -43501,14 +43549,19 @@ const index_1 = __importDefault(require("./engine/index"));
 
 const index_2 = __importDefault(require("./static/index"));
 
+const menu_scene_1 = __importDefault(require("./scenes/menu-scene"));
+
 const main_scene_1 = __importDefault(require("./scenes/main-scene"));
 
 const scenes = [{
+  name: "menu",
+  gameScene: new menu_scene_1.default()
+}, {
   name: "main",
   gameScene: new main_scene_1.default()
 }];
 index_1.default(scenes, index_2.default, engine => engine.mount(document.body));
-},{"./engine/index":"src/engine/index.ts","./static/index":"src/static/index.ts","./scenes/main-scene":"src/scenes/main-scene.ts"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./engine/index":"src/engine/index.ts","./static/index":"src/static/index.ts","./scenes/menu-scene":"src/scenes/menu-scene.ts","./scenes/main-scene":"src/scenes/main-scene.ts"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
