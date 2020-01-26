@@ -6,6 +6,10 @@
     "strict": true,
     "rootDir": "./src/",
     "incremental": true,
-    "lib": ["dom", "es2015"]
+    "lib": ["dom", "es2015"],
+    "baseUrl": ".",
+    "paths": {
+      "@*": ["./src/*"]
+    }
   }
 }
