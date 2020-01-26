@@ -1,34 +1,41 @@
 /// <reference path='./index.d.ts'/>
+import * as PIXI from "pixi.js";
+import VelocitySprite from "./engine/velocity-sprite";
 import run, {
   World,
   InputEvent,
+  LoadFunction,
   UpdateFunction,
-  RenderFunction
-} from "./engine";
-import Circle from "./circle";
+  Resources
+} from "./engine/index";
+import updateCircle from "./engine/circle";
 import ball from "./static/ball.png";
 
 const update: UpdateFunction = (state, world, input, delta) => {
-  state.balls.forEach((ball: any) => ball.update(world, input, delta));
+  state.balls.forEach((ball: any) => updateCircle(ball, world, input, delta));
 };
 
-const render: RenderFunction = (state, world, app) => {
-  state.balls.forEach((ball: any) => ball.render(app));
+const resources: Resources = [{ name: "ball", url: ball }];
+
+const load: LoadFunction = (resources, app) => {
+  const state = {
+    balls: [
+      new VelocitySprite(resources["ball"].texture, 300, 200, 10, -10),
+      new VelocitySprite(resources["ball"].texture, 300, 200, 5, 10)
+    ]
+  };
+
+  state.balls.forEach((ball: PIXI.Sprite) => app.stage.addChild(ball));
+
+  return state;
 };
 
-const state = {
-  balls: [
-    new Circle(300, 200, 100, -100, ball),
-    new Circle(300, 200, 50, 100, ball)
-  ]
-};
+function gameLoop(delta: number) {}
 
 async function a() {
-  const { canvas, start } = await run(state, update, render);
+  const canvas = await run(resources, load, update);
 
   document.body.appendChild(canvas);
-
-  start();
 }
 
 a();

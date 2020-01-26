@@ -43238,7 +43238,49 @@ var filters = {
   NoiseFilter: _filterNoise.NoiseFilter
 };
 exports.filters = filters;
-},{"@pixi/polyfill":"node_modules/@pixi/polyfill/lib/polyfill.es.js","@pixi/accessibility":"node_modules/@pixi/accessibility/lib/accessibility.es.js","@pixi/extract":"node_modules/@pixi/extract/lib/extract.es.js","@pixi/interaction":"node_modules/@pixi/interaction/lib/interaction.es.js","@pixi/prepare":"node_modules/@pixi/prepare/lib/prepare.es.js","@pixi/utils":"node_modules/@pixi/utils/lib/utils.es.js","@pixi/app":"node_modules/@pixi/app/lib/app.es.js","@pixi/core":"node_modules/@pixi/core/lib/core.es.js","@pixi/loaders":"node_modules/@pixi/loaders/lib/loaders.es.js","@pixi/particles":"node_modules/@pixi/particles/lib/particles.es.js","@pixi/spritesheet":"node_modules/@pixi/spritesheet/lib/spritesheet.es.js","@pixi/sprite-tiling":"node_modules/@pixi/sprite-tiling/lib/sprite-tiling.es.js","@pixi/text-bitmap":"node_modules/@pixi/text-bitmap/lib/text-bitmap.es.js","@pixi/ticker":"node_modules/@pixi/ticker/lib/ticker.es.js","@pixi/filter-alpha":"node_modules/@pixi/filter-alpha/lib/filter-alpha.es.js","@pixi/filter-blur":"node_modules/@pixi/filter-blur/lib/filter-blur.es.js","@pixi/filter-color-matrix":"node_modules/@pixi/filter-color-matrix/lib/filter-color-matrix.es.js","@pixi/filter-displacement":"node_modules/@pixi/filter-displacement/lib/filter-displacement.es.js","@pixi/filter-fxaa":"node_modules/@pixi/filter-fxaa/lib/filter-fxaa.es.js","@pixi/filter-noise":"node_modules/@pixi/filter-noise/lib/filter-noise.es.js","@pixi/mixin-cache-as-bitmap":"node_modules/@pixi/mixin-cache-as-bitmap/lib/mixin-cache-as-bitmap.es.js","@pixi/mixin-get-child-by-name":"node_modules/@pixi/mixin-get-child-by-name/lib/mixin-get-child-by-name.es.js","@pixi/mixin-get-global-position":"node_modules/@pixi/mixin-get-global-position/lib/mixin-get-global-position.es.js","@pixi/constants":"node_modules/@pixi/constants/lib/constants.es.js","@pixi/display":"node_modules/@pixi/display/lib/display.es.js","@pixi/graphics":"node_modules/@pixi/graphics/lib/graphics.es.js","@pixi/math":"node_modules/@pixi/math/lib/math.es.js","@pixi/mesh":"node_modules/@pixi/mesh/lib/mesh.es.js","@pixi/mesh-extras":"node_modules/@pixi/mesh-extras/lib/mesh-extras.es.js","@pixi/runner":"node_modules/@pixi/runner/lib/runner.es.js","@pixi/sprite":"node_modules/@pixi/sprite/lib/sprite.es.js","@pixi/sprite-animated":"node_modules/@pixi/sprite-animated/lib/sprite-animated.es.js","@pixi/text":"node_modules/@pixi/text/lib/text.es.js","@pixi/settings":"node_modules/@pixi/settings/lib/settings.es.js"}],"src/engine.ts":[function(require,module,exports) {
+},{"@pixi/polyfill":"node_modules/@pixi/polyfill/lib/polyfill.es.js","@pixi/accessibility":"node_modules/@pixi/accessibility/lib/accessibility.es.js","@pixi/extract":"node_modules/@pixi/extract/lib/extract.es.js","@pixi/interaction":"node_modules/@pixi/interaction/lib/interaction.es.js","@pixi/prepare":"node_modules/@pixi/prepare/lib/prepare.es.js","@pixi/utils":"node_modules/@pixi/utils/lib/utils.es.js","@pixi/app":"node_modules/@pixi/app/lib/app.es.js","@pixi/core":"node_modules/@pixi/core/lib/core.es.js","@pixi/loaders":"node_modules/@pixi/loaders/lib/loaders.es.js","@pixi/particles":"node_modules/@pixi/particles/lib/particles.es.js","@pixi/spritesheet":"node_modules/@pixi/spritesheet/lib/spritesheet.es.js","@pixi/sprite-tiling":"node_modules/@pixi/sprite-tiling/lib/sprite-tiling.es.js","@pixi/text-bitmap":"node_modules/@pixi/text-bitmap/lib/text-bitmap.es.js","@pixi/ticker":"node_modules/@pixi/ticker/lib/ticker.es.js","@pixi/filter-alpha":"node_modules/@pixi/filter-alpha/lib/filter-alpha.es.js","@pixi/filter-blur":"node_modules/@pixi/filter-blur/lib/filter-blur.es.js","@pixi/filter-color-matrix":"node_modules/@pixi/filter-color-matrix/lib/filter-color-matrix.es.js","@pixi/filter-displacement":"node_modules/@pixi/filter-displacement/lib/filter-displacement.es.js","@pixi/filter-fxaa":"node_modules/@pixi/filter-fxaa/lib/filter-fxaa.es.js","@pixi/filter-noise":"node_modules/@pixi/filter-noise/lib/filter-noise.es.js","@pixi/mixin-cache-as-bitmap":"node_modules/@pixi/mixin-cache-as-bitmap/lib/mixin-cache-as-bitmap.es.js","@pixi/mixin-get-child-by-name":"node_modules/@pixi/mixin-get-child-by-name/lib/mixin-get-child-by-name.es.js","@pixi/mixin-get-global-position":"node_modules/@pixi/mixin-get-global-position/lib/mixin-get-global-position.es.js","@pixi/constants":"node_modules/@pixi/constants/lib/constants.es.js","@pixi/display":"node_modules/@pixi/display/lib/display.es.js","@pixi/graphics":"node_modules/@pixi/graphics/lib/graphics.es.js","@pixi/math":"node_modules/@pixi/math/lib/math.es.js","@pixi/mesh":"node_modules/@pixi/mesh/lib/mesh.es.js","@pixi/mesh-extras":"node_modules/@pixi/mesh-extras/lib/mesh-extras.es.js","@pixi/runner":"node_modules/@pixi/runner/lib/runner.es.js","@pixi/sprite":"node_modules/@pixi/sprite/lib/sprite.es.js","@pixi/sprite-animated":"node_modules/@pixi/sprite-animated/lib/sprite-animated.es.js","@pixi/text":"node_modules/@pixi/text/lib/text.es.js","@pixi/settings":"node_modules/@pixi/settings/lib/settings.es.js"}],"src/engine/velocity-sprite.ts":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+const pixi_js_1 = require("pixi.js");
+
+class VelocitySprite extends pixi_js_1.Sprite {
+  constructor(texture, x, y, vx, vy) {
+    super(texture);
+    this.position.set(x, y);
+    this.velocity = {
+      vx: vx,
+      vy: vy,
+      set: (vx, vy) => {
+        this.velocity.vx = vx;
+        this.velocity.vy = vy;
+      }
+    };
+  }
+
+  get vx() {
+    return this.velocity.vx;
+  }
+
+  set vx(vx) {
+    this.velocity.vx = vx;
+  }
+
+  get vy() {
+    return this.velocity.vy;
+  }
+
+  set vy(vy) {
+    this.velocity.vy = vy;
+  }
+
+}
+
+exports.default = VelocitySprite;
+},{"pixi.js":"node_modules/pixi.js/lib/pixi.es.js"}],"src/engine/index.ts":[function(require,module,exports) {
 "use strict";
 
 var __importStar = this && this.__importStar || function (mod) {
@@ -43255,7 +43297,6 @@ Object.defineProperty(exports, "__esModule", {
 
 const PIXI = __importStar(require("pixi.js"));
 
-const step = 1 / 60;
 const input = {
   mouse: {
     x: null,
@@ -43263,45 +43304,7 @@ const input = {
   }
 };
 
-const gameLoop = (app, world, state, update, render) => {
-  let last = timestamp();
-  let delta = 0;
-  let gameState = state;
-  return function innerLoop(now) {
-    const diff = Math.min(1, (now - last) / 1000);
-    delta = delta + diff;
-
-    while (delta > step) {
-      delta = delta - step;
-      update(gameState, world, input, step);
-    }
-
-    const fps = Math.round(1 / diff);
-    render(gameState, world, app);
-    renderFps(app, fps);
-    last = now;
-    requestAnimationFrame(innerLoop);
-  };
-};
-
-let text;
-
-function renderFps(app, fps) {
-  app.stage.removeChild(text);
-  text = new PIXI.Text(`fps: ${fps}`, {
-    fontFamily: "Arial",
-    fontSize: 25,
-    fill: 0xffffff,
-    align: "center"
-  });
-  app.stage.addChild(text);
-}
-
-function timestamp() {
-  return window.performance.now();
-}
-
-const run = async (state, update, render) => {
+const run = async (resources, load, update) => {
   const promise = new Promise((resolve, reject) => {
     const app = new PIXI.Application({
       width: 600,
@@ -43313,16 +43316,11 @@ const run = async (state, update, render) => {
       width: app.view.width,
       height: app.view.height
     };
-    const loop = gameLoop(app, world, state, update, render);
-    app.loader.add(state.balls[0].state.sprite).load(() => {
-      state.balls.map(ball => {
-        ball.setSprite(new PIXI.Sprite(app.loader.resources[ball.state.sprite].texture));
-        app.stage.addChild(ball.sprite);
-      });
-      resolve({
-        canvas: app.view,
-        start: () => requestAnimationFrame(loop)
-      });
+    let state = null;
+    app.loader.add(resources).load((loader, resources) => {
+      state = load(resources, app);
+      app.ticker.add(delta => update(state, world, input, delta));
+      resolve(app.view);
     });
     app.view.addEventListener("mousemove", ev => {
       input.mouse.x = ev.clientX;
@@ -43333,54 +43331,32 @@ const run = async (state, update, render) => {
 };
 
 exports.default = run;
-},{"pixi.js":"node_modules/pixi.js/lib/pixi.es.js"}],"src/circle.ts":[function(require,module,exports) {
+},{"pixi.js":"node_modules/pixi.js/lib/pixi.es.js"}],"src/engine/circle.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-class Circle {
-  constructor(x, y, vx, vy, sprite) {
-    this.state = {
-      x,
-      y,
-      vx,
-      vy,
-      sprite
-    };
+function updateCircle(sprite, world, input, delta) {
+  const newX = sprite.x + sprite.vx * delta;
+  const newY = sprite.y + sprite.vy * delta;
+
+  if (newY < world.y) {
+    sprite.vy *= -1;
+  } else if (newX < world.x) {
+    sprite.vx *= -1;
+  } else if (newX + sprite.width > world.width) {
+    sprite.vx *= -1;
+  } else if (newY + sprite.height > world.height) {
+    sprite.vy *= -1;
+  } else {
+    sprite.x = newX;
+    sprite.y = newY;
   }
-
-  setSprite(sprite) {
-    this.sprite = sprite;
-    this.sprite.x = this.state.x;
-    this.sprite.y = this.state.y;
-  }
-
-  update(world, input, delta) {
-    const state = this.state;
-    const sprite = this.sprite;
-    sprite.x += state.vx * delta;
-    sprite.y += state.vy * delta;
-
-    if (sprite.y < world.y) {
-      state.vy *= -1;
-    } else if (sprite.x < world.x) {
-      state.vx *= -1;
-    } else if (sprite.x + sprite.width > world.width) {
-      state.vx *= -1;
-    } else if (sprite.y + sprite.height > world.height) {
-      state.vy *= -1;
-    }
-  }
-
-  render() {
-    const state = this.state;
-  }
-
 }
 
-exports.default = Circle;
+exports.default = updateCircle;
 },{}],"src/static/ball.png":[function(require,module,exports) {
 module.exports = "/ball.a28a5f6a.png";
 },{}],"src/index.ts":[function(require,module,exports) {
@@ -43394,37 +43370,42 @@ var __importDefault = this && this.__importDefault || function (mod) {
 
 Object.defineProperty(exports, "__esModule", {
   value: true
-}); /// <reference path='./index.d.ts'/>
+});
 
-const engine_1 = __importDefault(require("./engine"));
+const velocity_sprite_1 = __importDefault(require("./engine/velocity-sprite"));
 
-const circle_1 = __importDefault(require("./circle"));
+const index_1 = __importDefault(require("./engine/index"));
+
+const circle_1 = __importDefault(require("./engine/circle"));
 
 const ball_png_1 = __importDefault(require("./static/ball.png"));
 
 const update = (state, world, input, delta) => {
-  state.balls.forEach(ball => ball.update(world, input, delta));
+  state.balls.forEach(ball => circle_1.default(ball, world, input, delta));
 };
 
-const render = (state, world, app) => {
-  state.balls.forEach(ball => ball.render(app));
+const resources = [{
+  name: "ball",
+  url: ball_png_1.default
+}];
+
+const load = (resources, app) => {
+  const state = {
+    balls: [new velocity_sprite_1.default(resources["ball"].texture, 300, 200, 10, -10), new velocity_sprite_1.default(resources["ball"].texture, 300, 200, 5, 10)]
+  };
+  state.balls.forEach(ball => app.stage.addChild(ball));
+  return state;
 };
 
-const state = {
-  balls: [new circle_1.default(300, 200, 100, -100, ball_png_1.default), new circle_1.default(300, 200, 50, 100, ball_png_1.default)]
-};
+function gameLoop(delta) {}
 
 async function a() {
-  const {
-    canvas,
-    start
-  } = await engine_1.default(state, update, render);
+  const canvas = await index_1.default(resources, load, update);
   document.body.appendChild(canvas);
-  start();
 }
 
 a();
-},{"./engine":"src/engine.ts","./circle":"src/circle.ts","./static/ball.png":"src/static/ball.png"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./engine/velocity-sprite":"src/engine/velocity-sprite.ts","./engine/index":"src/engine/index.ts","./engine/circle":"src/engine/circle.ts","./static/ball.png":"src/static/ball.png"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -43452,7 +43433,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62201" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49170" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
