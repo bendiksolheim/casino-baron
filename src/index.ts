@@ -1,18 +1,28 @@
 /// <reference path='./index.d.ts'/>
-import start from "./engine/index";
-import resources from "./static/index";
-import MenuScene from "./scenes/menu-scene";
+import * as Phaser from "phaser";
 import MainScene from "./scenes/main-scene";
 
-const scenes = [
-  {
-    name: "menu",
-    gameScene: new MenuScene()
-  },
-  {
-    name: "main",
-    gameScene: new MainScene()
-  }
-];
+const config: Phaser.Types.Core.GameConfig = {
+  title: "Casino Baron",
 
-start(scenes, resources, engine => engine.mount(document.body));
+  type: Phaser.AUTO,
+
+  scale: {
+    width: 1200,
+    height: 800
+  },
+
+  physics: {
+    default: "arcade",
+    arcade: {
+      debug: false
+    }
+  },
+
+  scene: MainScene,
+
+  parent: "game",
+  backgroundColor: "#333333"
+};
+
+export const game = new Phaser.Game(config);

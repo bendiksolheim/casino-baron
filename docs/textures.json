@@ -1,0 +1,41 @@
+{
+	"textures": [
+		{
+			"image": "textures.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 26,
+				"h": 24
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "car_yellow.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 24,
+						"h": 22
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 24,
+						"h": 22
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 24,
+						"h": 22
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:ffd43ddb2abf9dd28e9cd3eacda093b0:a802f3892108ae346623120c3b353686:cf827d152df04949dfee256cd0c8efd8$"
+	}
+}
