@@ -6,6 +6,7 @@
   "scripts": {
     "start": "concurrently -r \"npm:type-check:watch\" \"npm:watch\"",
     "watch": "parcel index.html --out-dir docs",
+    "build": "parcel build index.html --out-dir docs --public-url '/casino-baron'",
     "type-check:watch": "tsc --noEmit --watch"
   },
   "keywords": [],
