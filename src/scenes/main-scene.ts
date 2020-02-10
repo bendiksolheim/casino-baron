@@ -14,8 +14,11 @@ const scene: Phaser.Types.Scenes.SettingsConfig = {
   key: "Game"
 };
 
-type PhysicsSprite = Phaser.GameObjects.Sprite & {
-  body: Phaser.Physics.Arcade.Body;
+type SpawnPoint = {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
 };
 
 type GameObjectWithLocation = Phaser.GameObjects.GameObject & {
@@ -24,9 +27,7 @@ type GameObjectWithLocation = Phaser.GameObjects.GameObject & {
 };
 
 export default class GameScene extends Phaser.Scene {
-  private world!: Phaser.Physics.Arcade.StaticGroup;
-  private carSpawnpoints!: GameObjectWithLocation[];
-  private keyboard!: Phaser.Types.Input.Keyboard.CursorKeys;
+  private carSpawnpoints!: SpawnPoint[];
 
   constructor() {
     super(scene);
@@ -43,25 +44,24 @@ export default class GameScene extends Phaser.Scene {
     this.carSpawnpoints = carSpawnpoints(map);
     const tileset = map.addTilesetImage("city", "tiles");
 
-    const ground = map.createStaticLayer("ground", tileset, 0, 0);
-
-    this.keyboard = this.input.keyboard.createCursorKeys();
-    this.world = this.physics.add.staticGroup();
+    map.createStaticLayer("below", tileset, 0, 0);
+    map.createStaticLayer("ground", tileset, 0, 0);
+    map.createStaticLayer("above", tileset, 0, 0);
   }
 
   public update() {
     if (random() > carProbability) {
-      const spawnIndex = randomFrom([0, 1]);
-      const spawn = this.carSpawnpoints[spawnIndex];
-      new Car(this, spawn.x, spawn.y, spawnIndex == 0 ? 100 : -100);
+      const spawn = randomFrom(this.carSpawnpoints);
+      new Car(this, spawn.x, spawn.y, spawn.vx);
     }
   }
 }
 
-function carSpawnpoints(
-  map: Phaser.Tilemaps.Tilemap
-): GameObjectWithLocation[] {
-  return [findObject(map, "spawn_left"), findObject(map, "spawn_right")];
+function carSpawnpoints(map: Phaser.Tilemaps.Tilemap): SpawnPoint[] {
+  return [
+    { vy: 0, vx: 100, ...findObject(map, "spawn_left") },
+    { vy: 0, vx: -100, ...findObject(map, "spawn_right") }
+  ];
 }
 
 function findObject(
