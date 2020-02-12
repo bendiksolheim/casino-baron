@@ -5,6 +5,17 @@ import tilesetResource from "../static/tilemap.png";
 import texturesAtlas from "../static/textures.json";
 import "../static/textures.png";
 import { random, randomFrom } from "../util/random";
+import { getPath } from "../util/tiled";
+
+enum VisitingCar {
+  Left,
+  Right
+}
+
+enum NonVisitingCar {
+  Left,
+  Right
+}
 
 const carProbability = 1 - 1 / 120;
 
@@ -14,20 +25,10 @@ const scene: Phaser.Types.Scenes.SettingsConfig = {
   key: "Game"
 };
 
-type SpawnPoint = {
-  x: number;
-  y: number;
-  vx: number;
-  vy: number;
-};
-
-type GameObjectWithLocation = Phaser.GameObjects.GameObject & {
-  x: number;
-  y: number;
-};
-
 export default class GameScene extends Phaser.Scene {
-  private carSpawnpoints!: SpawnPoint[];
+  private visitingPaths: Map<VisitingCar, Phaser.Curves.Path> = new Map();
+  private nonVisitingPaths: Map<NonVisitingCar, Phaser.Curves.Path> = new Map();
+  private cars: Car[] = [];
 
   constructor() {
     super(scene);
@@ -41,35 +42,46 @@ export default class GameScene extends Phaser.Scene {
 
   public create() {
     const map = this.make.tilemap({ key: "map" });
-    this.carSpawnpoints = carSpawnpoints(map);
     const tileset = map.addTilesetImage("city", "tiles");
 
     map.createStaticLayer("below", tileset, 0, 0);
     map.createStaticLayer("ground", tileset, 0, 0);
     map.createStaticLayer("above", tileset, 0, 0);
-  }
 
-  public update() {
-    if (random() > carProbability) {
-      const spawn = randomFrom(this.carSpawnpoints);
-      new Car(this, spawn.x, spawn.y, spawn.vx);
+    this.visitingPaths.set(
+      VisitingCar.Left,
+      getPath(this, findObject(map, "left_route"))
+    );
+    this.visitingPaths.set(
+      VisitingCar.Right,
+      getPath(this, findObject(map, "right_route"))
+    );
+
+    if (this.physics.world.drawDebug) {
+      const graphics = this.add.graphics();
+      graphics.lineStyle(3, 0xff0000, 1);
+      this.visitingPaths.get(VisitingCar.Left)?.draw(graphics);
+      this.visitingPaths.get(VisitingCar.Right)?.draw(graphics);
     }
   }
-}
 
-function carSpawnpoints(map: Phaser.Tilemaps.Tilemap): SpawnPoint[] {
-  return [
-    { vy: 0, vx: 100, ...findObject(map, "spawn_left") },
-    { vy: 0, vx: -100, ...findObject(map, "spawn_right") }
-  ];
+  public update(time: number, delta: number) {
+    if (random() > carProbability) {
+      const start = randomFrom([VisitingCar.Left, VisitingCar.Right]);
+      const path = this.visitingPaths.get(start)!;
+      this.cars.push(new Car(this, path));
+    }
+
+    this.cars = this.cars.filter(car => {
+      car.update(time, delta);
+      return !car.isDestroyed();
+    });
+  }
 }
 
 function findObject(
   map: Phaser.Tilemaps.Tilemap,
   name: string
-): GameObjectWithLocation {
-  return map.findObject(
-    "car_spawns",
-    obj => obj.name === name
-  ) as GameObjectWithLocation;
+): Phaser.GameObjects.GameObject {
+  return map.findObject("routes", obj => obj.name === name);
 }
