@@ -2,7 +2,11 @@
 import * as Phaser from "phaser";
 import MainScene from "./scenes/main-scene";
 
-const config: Phaser.Types.Core.GameConfig = {
+type GameConfig = Phaser.Types.Core.GameConfig & {
+  pixelArt: boolean;
+};
+
+const config: GameConfig = {
   title: "Casino Baron",
 
   type: Phaser.AUTO,
@@ -22,7 +26,9 @@ const config: Phaser.Types.Core.GameConfig = {
   scene: MainScene,
 
   parent: "game",
-  backgroundColor: "#333333"
+  backgroundColor: "#333333",
+
+  pixelArt: true
 };
 
 export const game = new Phaser.Game(config);
