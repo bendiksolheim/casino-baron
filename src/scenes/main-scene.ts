@@ -1,4 +1,4 @@
-import * as Phaser from "phaser";
+import Phaser from "phaser";
 import Car from "../objects/car";
 import tilemapResource from "../static/outdoor.json";
 import tilesetResource from "../static/tilemap.png";

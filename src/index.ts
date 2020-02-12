@@ -1,5 +1,5 @@
 /// <reference path='./index.d.ts'/>
-import * as Phaser from "phaser";
+import Phaser from "phaser";
 import MainScene from "./scenes/main-scene";
 
 type GameConfig = Phaser.Types.Core.GameConfig & {
