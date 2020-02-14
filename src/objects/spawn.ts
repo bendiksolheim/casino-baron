@@ -1,0 +1,48 @@
+import Phaser from "phaser";
+import Car from "../objects/car";
+import { getPath } from "../util/tiled";
+import { random, randomFrom } from "../util/random";
+
+const carProbability = 1 - 1 / 120;
+
+export default class Spawn {
+  private scene: Phaser.Scene;
+  private tilemap: Phaser.Tilemaps.Tilemap;
+  private visiting: Phaser.Curves.Path;
+  private nonVisiting: Phaser.Curves.Path;
+
+  constructor(
+    scene: Phaser.Scene,
+    tilemap: Phaser.Tilemaps.Tilemap,
+    visiting: string,
+    nonVisiting: string
+  ) {
+    this.scene = scene;
+    this.tilemap = tilemap;
+
+    this.visiting = getPath(scene, findObject(tilemap, visiting));
+    this.nonVisiting = getPath(scene, findObject(tilemap, nonVisiting));
+  }
+
+  update(time: number, delta: number) {}
+
+  spawn(delta: number) {
+    if (random() > carProbability) {
+      const path = randomFrom([this.visiting, this.nonVisiting]);
+      return new Car(this.scene, path);
+    } else {
+      return null;
+    }
+  }
+
+  spawns(): Phaser.Curves.Path[] {
+    return [this.visiting, this.nonVisiting];
+  }
+}
+
+function findObject(
+  map: Phaser.Tilemaps.Tilemap,
+  name: string
+): Phaser.GameObjects.GameObject {
+  return map.findObject("routes", obj => obj.name === name);
+}
