@@ -5,25 +5,41 @@
   "main": "index.js",
   "scripts": {
     "start": "concurrently -r \"npm:type-check:watch\" \"npm:watch\"",
-    "watch": "parcel index.html --out-dir docs",
-    "build": "parcel build index.html --out-dir docs --public-url '/casino-baron'",
+    "watch": "webpack-dev-server --mode development -d",
+    "build": "webpack --mode production",
     "type-check:watch": "tsc --noEmit --watch",
-    "clean": "rm -r ./docs"
+    "clean": "rm -r ./docs",
+    "analyze": "npm run stats && npm run analyzer",
+    "stats": "webpack --profile --json > stats.json",
+    "analyzer": "webpack-bundle-analyzer stats.json"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.8.4",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-proposal-object-rest-spread": "^7.8.3",
+    "@babel/preset-env": "^7.8.4",
+    "@babel/preset-typescript": "^7.8.3",
+    "babel-loader": "^8.0.6",
     "concurrently": "^5.0.2",
-    "parcel-bundler": "^1.12.4",
-    "parcel-plugin-static-files-copy": "^2.3.1",
-    "typescript": "^3.7.5"
+    "css-loader": "^3.4.2",
+    "file-loader": "^5.0.2",
+    "html-webpack-plugin": "^3.2.0",
+    "typescript": "^3.8.1-rc",
+    "webpack": "^4.41.6",
+    "webpack-bundle-analyzer": "^3.6.0",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
   },
   "dependencies": {
+    "@babel/plugin-transform-async-to-generator": "^7.8.3",
+    "babel-polyfill": "^6.26.0",
     "phaser": "^3.22.0"
   },
   "browserslist": [
-    "last 1 Firefox version"
+    "last 10 Firefox version"
   ],
   "staticFiles": {
     "staticPath": "src/static"

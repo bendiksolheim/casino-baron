@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
-    "target": "esnext",
-    "module": "commonjs",
-    "esModuleInterop": true,
+    "target": "es2017",
+    "noEmit": true,
+    "module": "esnext",
+    "moduleResolution": "node",
     "strict": true,
+    "allowSyntheticDefaultImports": true,
     "rootDir": "./src/",
-    "incremental": true,
     "lib": ["dom", "es2015", "scripthost"],
     "baseUrl": "./src",
     "paths": {
