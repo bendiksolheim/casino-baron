@@ -7,7 +7,7 @@
     "strict": true,
     "allowSyntheticDefaultImports": true,
     "rootDir": "./src/",
-    "lib": ["dom", "es2015", "scripthost"],
+    "lib": ["dom", "es2015", "es2019", "scripthost"],
     "baseUrl": "./src",
     "paths": {
       "@*": ["./src/*"]
