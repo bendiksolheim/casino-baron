@@ -7,12 +7,7 @@ import "../static/textures.png";
 import { random, randomFrom } from "../util/random";
 import { getPath } from "../util/tiled";
 
-enum VisitingCar {
-  Left,
-  Right
-}
-
-enum NonVisitingCar {
+enum CarSpawnpoint {
   Left,
   Right
 }
@@ -26,8 +21,8 @@ const scene: Phaser.Types.Scenes.SettingsConfig = {
 };
 
 export default class GameScene extends Phaser.Scene {
-  private visitingPaths: Map<VisitingCar, Phaser.Curves.Path> = new Map();
-  private nonVisitingPaths: Map<NonVisitingCar, Phaser.Curves.Path> = new Map();
+  private visitingPaths: Map<CarSpawnpoint, Phaser.Curves.Path> = new Map();
+  private nonVisitingPaths: Map<CarSpawnpoint, Phaser.Curves.Path> = new Map();
   private cars: Car[] = [];
 
   constructor() {
@@ -49,26 +44,36 @@ export default class GameScene extends Phaser.Scene {
     map.createStaticLayer("above", tileset, 0, 0);
 
     this.visitingPaths.set(
-      VisitingCar.Left,
-      getPath(this, findObject(map, "left_route"))
+      CarSpawnpoint.Left,
+      getPath(this, findObject(map, "left_visiting"))
     );
     this.visitingPaths.set(
-      VisitingCar.Right,
-      getPath(this, findObject(map, "right_route"))
+      CarSpawnpoint.Right,
+      getPath(this, findObject(map, "right_visiting"))
+    );
+
+    this.nonVisitingPaths.set(
+      CarSpawnpoint.Left,
+      getPath(this, findObject(map, "left"))
+    );
+    this.nonVisitingPaths.set(
+      CarSpawnpoint.Right,
+      getPath(this, findObject(map, "right"))
     );
 
     if (this.physics.world.drawDebug) {
       const graphics = this.add.graphics();
       graphics.lineStyle(3, 0xff0000, 1);
-      this.visitingPaths.get(VisitingCar.Left)?.draw(graphics);
-      this.visitingPaths.get(VisitingCar.Right)?.draw(graphics);
+      this.visitingPaths.get(CarSpawnpoint.Left)?.draw(graphics);
+      this.visitingPaths.get(CarSpawnpoint.Right)?.draw(graphics);
     }
   }
 
   public update(time: number, delta: number) {
     if (random() > carProbability) {
-      const start = randomFrom([VisitingCar.Left, VisitingCar.Right]);
-      const path = this.visitingPaths.get(start)!;
+      const start = randomFrom([CarSpawnpoint.Left, CarSpawnpoint.Right]);
+      const type = randomFrom([this.visitingPaths, this.nonVisitingPaths]);
+      const path = type.get(start)!;
       this.cars.push(new Car(this, path));
     }
 

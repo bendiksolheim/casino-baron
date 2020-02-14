@@ -54,7 +54,7 @@
                 {
                  "height":0,
                  "id":4,
-                 "name":"right_route",
+                 "name":"right_visiting",
                  "polyline":[
                         {
                          "x":0,
@@ -94,7 +94,7 @@
                 {
                  "height":0,
                  "id":5,
-                 "name":"left_route",
+                 "name":"left_visiting",
                  "polyline":[
                         {
                          "x":0,
@@ -130,6 +130,46 @@
                  "width":0,
                  "x":-0.472388870518216,
                  "y":577.639312415669
+                }, 
+                {
+                 "height":0,
+                 "id":6,
+                 "name":"left",
+                 "polyline":[
+                        {
+                         "x":0,
+                         "y":0
+                        }, 
+                        {
+                         "x":1200,
+                         "y":0
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":0,
+                 "y":578.16091954023
+                }, 
+                {
+                 "height":0,
+                 "id":7,
+                 "name":"right",
+                 "polyline":[
+                        {
+                         "x":0,
+                         "y":0
+                        }, 
+                        {
+                         "x":-1200,
+                         "y":0
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":1200,
+                 "y":552.873563218391
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -137,8 +177,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":9,
- "nextobjectid":6,
+ "nextlayerid":10,
+ "nextobjectid":8,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.3.2",
