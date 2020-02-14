@@ -45,9 +45,7 @@ export default class GameScene extends Phaser.Scene {
   }
 
   public update(time: number, delta: number) {
-    const newCars = this.spawns
-      .map(spawn => spawn.spawn(delta))
-      .filter(notNull);
+    const newCars = this.spawns.map(spawn => spawn.spawn(time)).filter(notNull);
     this.cars = this.cars.concat(newCars);
 
     this.cars = this.cars.filter(car => {
