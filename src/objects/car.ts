@@ -2,15 +2,22 @@ import Phaser from "phaser";
 
 const carSpeed = 1 / 10000;
 
+export enum CarType {
+  Visiting,
+  NonVisiting
+}
+
 export default class Car {
   private scene: Phaser.Scene;
+  private type: CarType;
   private path: Phaser.Curves.Path;
   private t: number = 0;
   private sprite: Phaser.GameObjects.Sprite;
   private destroyed: boolean = false;
 
-  constructor(scene: Phaser.Scene, path: Phaser.Curves.Path) {
+  constructor(scene: Phaser.Scene, type: CarType, path: Phaser.Curves.Path) {
     this.scene = scene;
+    this.type = type;
     this.path = path;
 
     const start = path.getStartPoint();
@@ -40,5 +47,9 @@ export default class Car {
 
   isDestroyed(): boolean {
     return this.destroyed;
+  }
+
+  isVisiting(): boolean {
+    return this.type === CarType.Visiting;
   }
 }

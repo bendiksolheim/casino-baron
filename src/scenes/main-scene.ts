@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import Car from "../objects/car";
 import Spawn from "../objects/spawn";
+import GameState from "../game-state";
 import tilemapResource from "../static/outdoor.json";
 import tilesetResource from "../static/tilemap.png";
 import texturesAtlas from "../static/textures.json";
@@ -41,7 +42,7 @@ export default class GameScene extends Phaser.Scene {
       new Spawn(this, map, "right_visiting", "right")
     ];
 
-    this.balanceText = this.add.text(10, 10, `${this.balance}$`, {
+    this.balanceText = this.add.text(10, 10, `${GameState.get().balance}$`, {
       fontFamily: "Alphabeta",
       fontSize: "32px",
       fill: "#000"
@@ -54,12 +55,25 @@ export default class GameScene extends Phaser.Scene {
 
   public update(time: number, delta: number) {
     const newCars = this.spawns.map(spawn => spawn.spawn(time)).filter(notNull);
+    newCars.forEach(car => {
+      if (car.isVisiting()) {
+        this.updateBalance(10);
+      }
+    });
     this.cars = this.cars.concat(newCars);
 
     this.cars = this.cars.filter(car => {
       car.update(time, delta);
       return !car.isDestroyed();
     });
+  }
+
+  updateBalance(amount: number) {
+    GameState.update(state => {
+      state.balance += amount;
+      return state;
+    });
+    this.balanceText.setText(`${GameState.get().balance}$`);
   }
 }
 

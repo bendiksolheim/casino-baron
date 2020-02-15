@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import Car from "../objects/car";
+import Car, { CarType } from "../objects/car";
 import { getPath } from "../util/tiled";
 import { random, randomFrom } from "../util/random";
 
@@ -34,8 +34,11 @@ export default class Spawn {
     if (probability > this.next) {
       this.lastSpawned = time + 1000;
       this.next = random();
-      const path = randomFrom([this.visiting, this.nonVisiting]);
-      return new Car(this.scene, path);
+      const path = randomFrom([
+        { type: CarType.Visiting, path: this.visiting },
+        { type: CarType.NonVisiting, path: this.nonVisiting }
+      ]);
+      return new Car(this.scene, path.type, path.path);
     } else {
       return null;
     }
