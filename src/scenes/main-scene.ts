@@ -15,6 +15,8 @@ const scene: Phaser.Types.Scenes.SettingsConfig = {
 export default class GameScene extends Phaser.Scene {
   private cars: Car[] = [];
   private spawns: Spawn[] = [];
+  private balance: number = 1000;
+  private balanceText!: Phaser.GameObjects.Text;
 
   constructor() {
     super(scene);
@@ -38,6 +40,12 @@ export default class GameScene extends Phaser.Scene {
       new Spawn(this, map, "left_visiting", "left"),
       new Spawn(this, map, "right_visiting", "right")
     ];
+
+    this.balanceText = this.add.text(10, 10, `${this.balance}$`, {
+      fontFamily: "Alphabeta",
+      fontSize: "32px",
+      fill: "#000"
+    });
 
     if (this.physics.world.drawDebug) {
       drawPaths(this.add.graphics(), this.spawns);
