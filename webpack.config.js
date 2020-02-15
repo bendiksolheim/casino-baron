@@ -22,7 +22,7 @@ module.exports = (env, { mode } = { mode: "development" }) => ({
         use: ["css-loader"]
       },
       {
-        test: /\.(png)$/,
+        test: /\.(png|ttf)$/,
         loader: "file-loader",
         options: {
           name: "[name].[ext]"

@@ -1,6 +1,7 @@
 /// <reference path='./index.d.ts'/>
 import Phaser from "phaser";
 import MainScene from "./scenes/main-scene";
+import "./static/alphbeta.ttf";
 
 type GameConfig = Phaser.Types.Core.GameConfig & {
   pixelArt: boolean;
