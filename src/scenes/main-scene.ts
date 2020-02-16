@@ -36,6 +36,7 @@ export default class GameScene extends Phaser.Scene {
     map.createStaticLayer("below", tileset, 0, 0);
     map.createStaticLayer("ground", tileset, 0, 0);
     map.createStaticLayer("above", tileset, 0, 0);
+    map.createStaticLayer("woods_lights", tileset, 0, 0);
 
     this.spawns = [
       new Spawn(this, map, "left_visiting", "left"),
