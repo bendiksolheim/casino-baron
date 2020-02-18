@@ -38,10 +38,7 @@ export default class GameScene extends Phaser.Scene {
     map.createStaticLayer("above", tileset, 0, 0);
     map.createStaticLayer("woods_lights", tileset, 0, 0);
 
-    this.spawns = [
-      new Spawn(this, map, "left_visiting", "left"),
-      new Spawn(this, map, "right_visiting", "right")
-    ];
+    this.spawns = [new Spawn(this, map, "left"), new Spawn(this, map, "right")];
 
     this.balanceText = this.add.text(10, 10, `${GameState.get().balance}$`, {
       fontFamily: "Alphabeta",

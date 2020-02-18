@@ -14,14 +14,13 @@ export default class Spawn {
   constructor(
     scene: Phaser.Scene,
     tilemap: Phaser.Tilemaps.Tilemap,
-    visiting: string,
-    nonVisiting: string
+    prefix: string
   ) {
     this.scene = scene;
     this.tilemap = tilemap;
 
-    this.visiting = getPath(scene, findObject(tilemap, visiting));
-    this.nonVisiting = getPath(scene, findObject(tilemap, nonVisiting));
+    this.visiting = getPath(scene, findObject(tilemap, `${prefix}_visiting`));
+    this.nonVisiting = getPath(scene, findObject(tilemap, prefix));
 
     this.lastSpawned = 0;
     this.next = random();
