@@ -3,13 +3,16 @@ import Car, { CarType } from "../objects/car";
 import { getPath } from "../util/tiled";
 import { random, randomFrom } from "../util/random";
 
+type PathMapT = {
+  [key: string]: Phaser.Curves.Path;
+};
+
 export default class Spawn {
   private scene: Phaser.Scene;
   private tilemap: Phaser.Tilemaps.Tilemap;
-  private visiting: Phaser.Curves.Path;
-  private nonVisiting: Phaser.Curves.Path;
   private lastSpawned: number;
   private next: number;
+  private paths: PathMapT = {};
 
   constructor(
     scene: Phaser.Scene,
@@ -19,8 +22,11 @@ export default class Spawn {
     this.scene = scene;
     this.tilemap = tilemap;
 
-    this.visiting = getPath(scene, findObject(tilemap, `${prefix}_visiting`));
-    this.nonVisiting = getPath(scene, findObject(tilemap, prefix));
+    this.paths["visiting"] = getPath(
+      scene,
+      findObject(tilemap, `${prefix}_visiting`)
+    );
+    this.paths["normal"] = getPath(scene, findObject(tilemap, prefix));
 
     this.lastSpawned = 0;
     this.next = random();
@@ -33,18 +39,18 @@ export default class Spawn {
     if (probability > this.next) {
       this.lastSpawned = time + 1000;
       this.next = random();
-      const path = randomFrom([
-        { type: CarType.Visiting, path: this.visiting },
-        { type: CarType.NonVisiting, path: this.nonVisiting }
-      ]);
-      return new Car(this.scene, path.type, path.path);
+      if (random() >= 0.5) {
+        return new Car(this.scene, CarType.Visiting, this.paths["visiting"]);
+      } else {
+        return new Car(this.scene, CarType.NonVisiting, this.paths["normal"]);
+      }
     } else {
       return null;
     }
   }
 
   spawns(): Phaser.Curves.Path[] {
-    return [this.visiting, this.nonVisiting];
+    return Object.values(this.paths);
   }
 }
 
