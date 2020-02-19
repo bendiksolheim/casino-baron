@@ -72,22 +72,26 @@ export default class Spawn {
   }
 }
 
-const carSpeed = 1 / 10000;
+const carSpeed = 100;
 
 class Enter implements State {
   private car: Car;
   private path: Phaser.Curves.Path;
   private t: number = 0;
+  private length: number;
 
   constructor(car: Car, path: Phaser.Curves.Path) {
     this.car = car;
     this.path = path;
+    this.length = path.getLength();
   }
 
   enter() {}
 
   update(time: number, dt: number) {
-    this.t = this.t + carSpeed * dt;
+    const elapsedSeconds = dt / 1000;
+    const distance = (carSpeed * elapsedSeconds) / this.length;
+    this.t += distance;
     const newLocation = this.path.getPoint(this.t);
     if (newLocation == null) {
       this.car.stateMachine.changeTo("parked");
@@ -124,16 +128,20 @@ class Exit implements State {
   private car: Car;
   private path: Phaser.Curves.Path;
   private t: number = 0;
+  private length: number;
 
   constructor(car: Car, path: Phaser.Curves.Path) {
     this.car = car;
     this.path = path;
+    this.length = path.getLength();
   }
 
   enter() {}
 
   update(time: number, dt: number) {
-    this.t = this.t + carSpeed * dt;
+    const elapsedSeconds = dt / 1000;
+    const distance = (carSpeed * elapsedSeconds) / this.length;
+    this.t += distance;
     const newLocation = this.path.getPoint(this.t);
     if (newLocation == null) {
       this.car.destroy();
