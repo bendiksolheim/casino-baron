@@ -1,10 +1,13 @@
 import Phaser from "phaser";
-import Car, { CarType } from "../objects/car";
+import Car from "../objects/car";
 import { getPath } from "../util/tiled";
-import { random, randomFrom } from "../util/random";
+import { random } from "../util/random";
+import { State } from "../fsm/state-machine";
+import GameScene from "scenes/main-scene";
 
 enum Path {
-  Visiting,
+  Enter,
+  Exit,
   Normal
 }
 
@@ -13,25 +16,21 @@ type PathMapT = {
 };
 
 export default class Spawn {
-  private scene: Phaser.Scene;
-  private tilemap: Phaser.Tilemaps.Tilemap;
+  private scene: GameScene;
   private lastSpawned: number;
   private next: number;
   private paths: PathMapT;
 
   constructor(
-    scene: Phaser.Scene,
+    scene: GameScene,
     tilemap: Phaser.Tilemaps.Tilemap,
     prefix: string
   ) {
     this.scene = scene;
-    this.tilemap = tilemap;
 
     this.paths = {
-      [Path.Visiting]: getPath(
-        scene,
-        findObject(tilemap, `${prefix}_visiting`)
-      ),
+      [Path.Enter]: getPath(scene, findObject(tilemap, `${prefix}_enter`)),
+      [Path.Exit]: getPath(scene, findObject(tilemap, `${prefix}_exit`)),
       [Path.Normal]: getPath(scene, findObject(tilemap, prefix))
     };
 
@@ -47,13 +46,21 @@ export default class Spawn {
       this.lastSpawned = time + 1000;
       this.next = random();
       if (random() >= 0.5) {
-        return new Car(this.scene, CarType.Visiting, this.paths[Path.Visiting]);
+        const car = new Car(this.scene);
+        car.stateMachine.add({
+          initial: new Enter(car, this.paths[Path.Enter]),
+          parked: new Parked(car, amount => this.scene.updateBalance(amount)),
+          exit: new Exit(car, this.paths[Path.Exit])
+        });
+        car.stateMachine.changeTo("initial");
+        return car;
       } else {
-        return new Car(
-          this.scene,
-          CarType.NonVisiting,
-          this.paths[Path.Normal]
-        );
+        const car = new Car(this.scene);
+        car.stateMachine.add({
+          initial: new Exit(car, this.paths[Path.Normal])
+        });
+        car.stateMachine.changeTo("initial");
+        return car;
       }
     } else {
       return null;
@@ -62,6 +69,77 @@ export default class Spawn {
 
   spawns(): Phaser.Curves.Path[] {
     return Object.values(this.paths);
+  }
+}
+
+const carSpeed = 1 / 10000;
+
+class Enter implements State {
+  private car: Car;
+  private path: Phaser.Curves.Path;
+  private t: number = 0;
+
+  constructor(car: Car, path: Phaser.Curves.Path) {
+    this.car = car;
+    this.path = path;
+  }
+
+  enter() {}
+
+  update(time: number, dt: number) {
+    this.t = this.t + carSpeed * dt;
+    const newLocation = this.path.getPoint(this.t);
+    if (newLocation == null) {
+      this.car.stateMachine.changeTo("parked");
+    } else {
+      this.car.sprite.setPosition(newLocation.x, newLocation.y);
+    }
+  }
+}
+
+class Parked implements State {
+  private car: Car;
+  private spend: (amount: number) => void;
+  private t: number = 0;
+
+  constructor(car: Car, spend: (amount: number) => void) {
+    this.car = car;
+    this.spend = spend;
+  }
+
+  enter() {
+    this.spend(10);
+  }
+
+  update(time: number, dt: number) {
+    this.t += dt;
+
+    if (this.t > 2000) {
+      this.car.stateMachine.changeTo("exit");
+    }
+  }
+}
+
+class Exit implements State {
+  private car: Car;
+  private path: Phaser.Curves.Path;
+  private t: number = 0;
+
+  constructor(car: Car, path: Phaser.Curves.Path) {
+    this.car = car;
+    this.path = path;
+  }
+
+  enter() {}
+
+  update(time: number, dt: number) {
+    this.t = this.t + carSpeed * dt;
+    const newLocation = this.path.getPoint(this.t);
+    if (newLocation == null) {
+      this.car.destroy();
+    } else {
+      this.car.sprite.setPosition(newLocation.x, newLocation.y);
+    }
   }
 }
 
