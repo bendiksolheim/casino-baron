@@ -56,7 +56,7 @@ module.exports = (env, { mode } = { mode: "development" }) => ({
     }
   },
 
-  devtool: "cheap-eval-source-map",
+  devtool: isDev(mode) ? "cheap-eval-source-map" : false,
 
   devServer: {
     compress: true,
