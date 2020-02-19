@@ -17,9 +17,10 @@ type PathMapT = {
 
 export default class Spawn {
   private scene: GameScene;
-  private lastSpawned: number;
-  private next: number;
+  private elapsed: number = 0;
+  private next: number = 0;
   private paths: PathMapT;
+  private spawnRate: number = 10;
 
   constructor(
     scene: GameScene,
@@ -34,17 +35,16 @@ export default class Spawn {
       [Path.Normal]: getPath(scene, findObject(tilemap, prefix))
     };
 
-    this.lastSpawned = 0;
-    this.next = random();
+    this.setNextSpawn();
   }
 
   update(time: number, delta: number) {}
 
-  spawn(time: number) {
-    const probability = getProbability((time - this.lastSpawned) / 10000);
-    if (probability > this.next) {
-      this.lastSpawned = time + 1000;
-      this.next = random();
+  spawn(delta: number) {
+    this.elapsed += delta;
+
+    if (this.elapsed >= this.next) {
+      this.setNextSpawn();
       if (random() >= 0.5) {
         const car = new Car(this.scene);
         car.stateMachine.add({
@@ -65,6 +65,13 @@ export default class Spawn {
     } else {
       return null;
     }
+  }
+
+  setNextSpawn() {
+    this.elapsed = 0;
+    const lowerBound = this.spawnRate / 2;
+    const upperBound = this.spawnRate + lowerBound;
+    this.next = ((upperBound - lowerBound) * random() + lowerBound) * 1000;
   }
 
   spawns(): Phaser.Curves.Path[] {
@@ -149,10 +156,6 @@ class Exit implements State {
       this.car.sprite.setPosition(newLocation.x, newLocation.y);
     }
   }
-}
-
-function getProbability(x: number) {
-  return 1 + Math.cos((Math.PI / 2) * x - Math.PI);
 }
 
 function findObject(
