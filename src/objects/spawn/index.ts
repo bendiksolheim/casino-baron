@@ -1,8 +1,9 @@
 import Phaser from "phaser";
-import Car from "../objects/car";
-import { getPath } from "../util/tiled";
-import { random } from "../util/random";
-import { State } from "../fsm/state-machine";
+import Car from "../car";
+import { getPath } from "../../util/tiled";
+import { random } from "../../util/random";
+import { State } from "../../fsm/state-machine";
+import { findObject } from "../../util/phaser";
 
 enum Path {
   Enter,
@@ -157,11 +158,4 @@ class Exit implements State {
       this.car.sprite.setPosition(newLocation.x, newLocation.y);
     }
   }
-}
-
-function findObject(
-  map: Phaser.Tilemaps.Tilemap,
-  name: string
-): Phaser.GameObjects.GameObject {
-  return map.findObject("routes", obj => obj.name === name);
 }

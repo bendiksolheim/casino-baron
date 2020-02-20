@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import StateMachine from "../fsm/state-machine";
+import StateMachine from "../../fsm/state-machine";
 
 export default class Car {
   stateMachine: StateMachine = new StateMachine();
