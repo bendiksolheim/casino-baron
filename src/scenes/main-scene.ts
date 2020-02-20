@@ -16,7 +16,6 @@ const scene: Phaser.Types.Scenes.SettingsConfig = {
 export default class GameScene extends Phaser.Scene {
   private cars: Car[] = [];
   private spawns: Spawn[] = [];
-  private balance: number = 1000;
   private balanceText!: Phaser.GameObjects.Text;
 
   constructor() {
