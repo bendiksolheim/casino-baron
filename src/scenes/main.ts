@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import Car from "../objects/car";
 import Spawn from "../objects/spawn";
+import { notNull } from "../util/value";
 import GameState from "../game-state";
 import tilemapResource from "../static/outdoor.json";
 import tilesetResource from "../static/tilemap.png";
@@ -81,8 +82,4 @@ function drawPaths(
     .forEach(path => {
       path.draw(graphics);
     });
-}
-
-function notNull<T>(value: T | null): value is T {
-  return value != null;
 }
