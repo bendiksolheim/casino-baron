@@ -46,6 +46,8 @@ export default class GameScene extends Phaser.Scene {
       fill: "#000"
     });
 
+    this.events.on("spend", this.updateBalance, this);
+
     if (this.physics.world.drawDebug) {
       drawPaths(this.add.graphics(), this.spawns);
     }

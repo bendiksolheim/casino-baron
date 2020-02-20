@@ -3,7 +3,6 @@ import Car from "../objects/car";
 import { getPath } from "../util/tiled";
 import { random } from "../util/random";
 import { State } from "../fsm/state-machine";
-import GameScene from "scenes/main-scene";
 
 enum Path {
   Enter,
@@ -16,14 +15,14 @@ type PathMapT = {
 };
 
 export default class Spawn {
-  private scene: GameScene;
+  private scene: Phaser.Scene;
   private elapsed: number = 0;
   private next: number = 0;
   private paths: PathMapT;
   private spawnRate: number = 10;
 
   constructor(
-    scene: GameScene,
+    scene: Phaser.Scene,
     tilemap: Phaser.Tilemaps.Tilemap,
     prefix: string
   ) {
@@ -49,7 +48,9 @@ export default class Spawn {
         const car = new Car(this.scene);
         car.stateMachine.add({
           initial: new Enter(car, this.paths[Path.Enter]),
-          parked: new Parked(car, amount => this.scene.updateBalance(amount)),
+          parked: new Parked(car, amount =>
+            this.scene.events.emit("spend", amount)
+          ),
           exit: new Exit(car, this.paths[Path.Exit])
         });
         car.stateMachine.changeTo("initial");
