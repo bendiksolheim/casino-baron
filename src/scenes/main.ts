@@ -4,6 +4,7 @@ import Spawn from "../objects/spawn";
 import paths from "../graphics/paths";
 import { notNull } from "../util/value";
 import GameState from "../game-state";
+import { GameObjectWithLocation, findObject } from "../util/phaser";
 import tilemapResource from "../static/outdoor.json";
 import tilesetResource from "../static/tilemap.png";
 import texturesAtlas from "../static/textures.json";
@@ -19,6 +20,7 @@ export default class GameScene extends Phaser.Scene {
   private cars: Car[] = [];
   private spawns: Spawn[] = [];
   private balanceText!: Phaser.GameObjects.Text;
+  private cashPoint!: GameObjectWithLocation;
 
   constructor() {
     super(scene);
@@ -33,6 +35,7 @@ export default class GameScene extends Phaser.Scene {
   public create() {
     const map = this.make.tilemap({ key: "map" });
     const tileset = map.addTilesetImage("city", "tiles");
+    this.cashPoint = findObject(map, "cash_point");
 
     map.createStaticLayer("below", tileset, 0, 0);
     map.createStaticLayer("ground", tileset, 0, 0);
@@ -68,10 +71,20 @@ export default class GameScene extends Phaser.Scene {
   }
 
   updateBalance(amount: number) {
+    const text = this.add
+      .text(this.cashPoint.x, this.cashPoint.y, `${amount}$`, {
+        fontFamily: "Alphabeta",
+        fontSize: "32px",
+        fill: "#000"
+      })
+      .setOrigin(0.5, 0.5);
+
     GameState.update(state => {
       state.balance += amount;
       return state;
     });
     this.balanceText.setText(`${GameState.get().balance}$`);
+
+    this.time.delayedCall(1000, () => text.destroy(), undefined, this);
   }
 }
