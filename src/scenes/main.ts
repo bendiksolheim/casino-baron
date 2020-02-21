@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import Car from "../objects/car";
 import Spawn from "../objects/spawn";
+import paths from "../graphics/paths";
 import { notNull } from "../util/value";
 import GameState from "../game-state";
 import tilemapResource from "../static/outdoor.json";
@@ -49,7 +50,10 @@ export default class GameScene extends Phaser.Scene {
     this.events.on("spend", this.updateBalance, this);
 
     if (this.physics.world.drawDebug) {
-      drawPaths(this.add.graphics(), this.spawns);
+      paths.draw(
+        this.add.graphics(),
+        this.spawns.flatMap(spawn => spawn.spawns())
+      );
     }
   }
 
@@ -70,16 +74,4 @@ export default class GameScene extends Phaser.Scene {
     });
     this.balanceText.setText(`${GameState.get().balance}$`);
   }
-}
-
-function drawPaths(
-  graphics: Phaser.GameObjects.Graphics,
-  spawns: Spawn[]
-): void {
-  graphics.lineStyle(3, 0xff0000, 1);
-  spawns
-    .flatMap(spawn => spawn.spawns())
-    .forEach(path => {
-      path.draw(graphics);
-    });
 }

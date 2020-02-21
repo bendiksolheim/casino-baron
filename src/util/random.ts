@@ -7,4 +7,10 @@ function randomFrom<T>(objects: T[]): T {
   return objects[index];
 }
 
-export { random, randomFrom };
+function randomAround(n: number): number {
+  const lowerBound = n / 2;
+  const upperBound = n + lowerBound;
+  return (upperBound - lowerBound) * random() + lowerBound;
+}
+
+export { random, randomFrom, randomAround };
