@@ -79,12 +79,17 @@ export default class GameScene extends Phaser.Scene {
       })
       .setOrigin(0.5, 0.5);
 
+    this.add.tween({
+      targets: [text],
+      alpha: 0,
+      duration: 1000,
+      onComplete: () => text.destroy()
+    });
+
     GameState.update(state => {
       state.balance += amount;
       return state;
     });
     this.balanceText.setText(`${GameState.get().balance}$`);
-
-    this.time.delayedCall(1000, () => text.destroy(), undefined, this);
   }
 }
