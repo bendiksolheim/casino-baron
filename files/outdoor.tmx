@@ -223,12 +223,6 @@
 </data>
  </layer>
  <objectgroup id="5" name="objects">
-  <object id="4" name="right_visiting" x="1198.4" y="552.597">
-   <polyline points="0,0 -457.953,0.614352 -458.056,-78.5619 -600.533,-78.5619 -741.678,-78.5619 -741.678,1.33156 -1197.07,0"/>
-  </object>
-  <object id="5" name="left_visiting" x="-0.472389" y="577.639" visible="0">
-   <polyline points="0,0 486.019,-1.33156 486.019,-78.5619 599.201,-78.5619 712.383,-78.5619 712.383,0 1201.07,0"/>
-  </object>
   <object id="6" name="left" x="0" y="578.161" visible="0">
    <polyline points="0,0 1200,0"/>
   </object>
