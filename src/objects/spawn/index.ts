@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import Car from "../car";
-import { getPath } from "../../util/tiled";
+import { getPath } from "../../util/phaser";
 import { random, randomAround } from "../../util/random";
 import { findObject } from "../../util/phaser";
 import { Enter, Parked, Exit } from "../car/states";
