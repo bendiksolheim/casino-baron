@@ -1,4 +1,6 @@
 /// <reference path='./index.d.ts'/>
+/// <reference path='./phaser3-rex-plugins.d.ts'/>
+/// <reference path='./phaser-extensions.d.ts'/>
 import Phaser from "phaser";
 import RexUIPlugin from "phaser3-rex-plugins/templates/ui/ui-plugin";
 import MainScene from "./scenes/main";
