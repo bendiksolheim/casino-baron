@@ -1,18 +1,21 @@
 import { State } from "../../fsm/state-machine";
 import Car from "../car/";
+import ParkingLot from "objects/parking-lot";
 
 const carSpeed = 100;
 
 export class Enter implements State {
   private car: Car;
   private path: Phaser.Curves.Path;
+  private parkingLot: ParkingLot;
   private t: number = 0;
   private length: number;
 
-  constructor(car: Car, path: Phaser.Curves.Path) {
+  constructor(car: Car, path: Phaser.Curves.Path, parkingLot: ParkingLot) {
     this.car = car;
     this.path = path;
     this.length = path.getLength();
+    this.parkingLot = parkingLot;
   }
 
   enter() {}
@@ -25,7 +28,11 @@ export class Enter implements State {
     this.t += distance;
     const newLocation = this.path.getPoint(this.t);
     if (newLocation == null) {
-      this.car.stateMachine.changeTo("parked");
+      if (this.parkingLot.hasFreeSlots()) {
+        this.car.stateMachine.changeTo("parked");
+      } else {
+        this.car.stateMachine.changeTo("exit");
+      }
     } else {
       this.car.sprite.setPosition(newLocation.x, newLocation.y);
     }
@@ -35,18 +42,25 @@ export class Enter implements State {
 export class Parked implements State {
   private car: Car;
   private spend: (amount: number) => void;
+  private park: () => void;
+  private leave: () => void;
   private t: number = 0;
 
-  constructor(car: Car, spend: (amount: number) => void) {
+  constructor(car: Car, scene: Phaser.Scene) {
     this.car = car;
-    this.spend = spend;
+    this.spend = amount => scene.events.emit("spend", amount);
+    this.park = () => scene.events.emit("park", car);
+    this.leave = () => scene.events.emit("leave", car);
   }
 
   enter() {
-    this.spend(10);
+    this.park();
   }
 
-  exit() {}
+  exit() {
+    this.spend(10);
+    this.leave();
+  }
 
   update(time: number, dt: number) {
     this.t += dt;

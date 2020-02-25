@@ -9,6 +9,7 @@ import tilemapResource from "../static/outdoor.json";
 import tilesetResource from "../static/tilemap.png";
 import texturesAtlas from "../static/textures.json";
 import "../static/textures.png";
+import ParkingLot from "../objects/parking-lot";
 
 const scene: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
@@ -21,6 +22,7 @@ export default class GameScene extends Phaser.Scene {
   private spawns: Spawn[] = [];
   private balanceText!: Phaser.GameObjects.Text;
   private cashPoint!: GameObjectWithLocation;
+  private parkingLot!: ParkingLot;
 
   constructor() {
     super(scene);
@@ -42,7 +44,11 @@ export default class GameScene extends Phaser.Scene {
     map.createStaticLayer("above", tileset, 0, 0);
     map.createStaticLayer("woods_lights", tileset, 0, 0);
 
-    this.spawns = [new Spawn(this, map, "left"), new Spawn(this, map, "right")];
+    this.parkingLot = new ParkingLot(this, map);
+    this.spawns = [
+      new Spawn(this, map, "left", this.parkingLot),
+      new Spawn(this, map, "right", this.parkingLot)
+    ];
 
     this.balanceText = this.add.text(10, 10, `${GameState.get().balance}$`, {
       fontFamily: "Alphabeta",
