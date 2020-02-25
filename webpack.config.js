@@ -37,6 +37,10 @@ module.exports = (env, { mode } = { mode: "development" }) => ({
   plugins: [
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, "index.html")
+    }),
+    new webpack.DefinePlugin({
+      CANVAS_RENDERER: JSON.stringify(true),
+      WEBGL_RENDERER: JSON.stringify(true)
     })
   ],
 
