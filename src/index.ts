@@ -1,5 +1,6 @@
 /// <reference path='./index.d.ts'/>
 import Phaser from "phaser";
+import RexUIPlugin from "phaser3-rex-plugins/templates/ui/ui-plugin";
 import MainScene from "./scenes/main";
 import Hud from "./scenes/hud";
 import "./static/alphbeta.ttf";
@@ -30,7 +31,17 @@ const config: GameConfig = {
   parent: "game",
   backgroundColor: "#333333",
 
-  pixelArt: true
+  pixelArt: true,
+
+  plugins: {
+    scene: [
+      {
+        key: "rexUI",
+        plugin: RexUIPlugin,
+        mapping: "rexUI"
+      }
+    ]
+  }
 };
 
 export const game = new Phaser.Game(config);
