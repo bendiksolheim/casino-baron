@@ -1,6 +1,7 @@
 /// <reference path='./index.d.ts'/>
 import Phaser from "phaser";
 import MainScene from "./scenes/main";
+import Hud from "./scenes/hud";
 import "./static/alphbeta.ttf";
 
 type GameConfig = Phaser.Types.Core.GameConfig & {
@@ -24,7 +25,7 @@ const config: GameConfig = {
     }
   },
 
-  scene: MainScene,
+  scene: [MainScene, Hud],
 
   parent: "game",
   backgroundColor: "#333333",

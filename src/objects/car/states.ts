@@ -1,6 +1,7 @@
 import { State } from "../../fsm/state-machine";
 import Car from "../car/";
 import ParkingLot from "objects/parking-lot";
+import GameState from "../../game-state";
 
 const carSpeed = 100;
 
@@ -48,7 +49,11 @@ export class Parked implements State {
 
   constructor(car: Car, scene: Phaser.Scene) {
     this.car = car;
-    this.spend = amount => scene.events.emit("spend", amount);
+    this.spend = amount =>
+      GameState.update(state => ({
+        ...state,
+        balance: state.balance + amount
+      }));
     this.park = () => scene.events.emit("park", car);
     this.leave = () => scene.events.emit("leave", car);
   }

@@ -3,8 +3,6 @@ import Car from "../objects/car";
 import Spawn from "../objects/spawn";
 import paths from "../graphics/paths";
 import { notNull } from "../util/value";
-import GameState from "../game-state";
-import { GameObjectWithLocation, findObject } from "../util/phaser";
 import tilemapResource from "../static/outdoor.json";
 import tilesetResource from "../static/tilemap.png";
 import texturesAtlas from "../static/textures.json";
@@ -20,8 +18,6 @@ const scene: Phaser.Types.Scenes.SettingsConfig = {
 export default class GameScene extends Phaser.Scene {
   private cars: Car[] = [];
   private spawns: Spawn[] = [];
-  private balanceText!: Phaser.GameObjects.Text;
-  private cashPoint!: GameObjectWithLocation;
   private parkingLot!: ParkingLot;
 
   constructor() {
@@ -37,7 +33,6 @@ export default class GameScene extends Phaser.Scene {
   public create() {
     const map = this.make.tilemap({ key: "map" });
     const tileset = map.addTilesetImage("city", "tiles");
-    this.cashPoint = findObject(map, "cash_point");
 
     map.createStaticLayer("below", tileset, 0, 0);
     map.createStaticLayer("ground", tileset, 0, 0);
@@ -49,14 +44,6 @@ export default class GameScene extends Phaser.Scene {
       new Spawn(this, map, "left", this.parkingLot),
       new Spawn(this, map, "right", this.parkingLot)
     ];
-
-    this.balanceText = this.add.text(10, 10, `${GameState.get().balance}$`, {
-      fontFamily: "Alphabeta",
-      fontSize: "32px",
-      fill: "#000"
-    });
-
-    this.events.on("spend", this.updateBalance, this);
 
     if (this.physics.world.drawDebug) {
       paths.draw(
@@ -74,28 +61,5 @@ export default class GameScene extends Phaser.Scene {
       car.update(time, delta);
       return !car.isDestroyed();
     });
-  }
-
-  updateBalance(amount: number) {
-    const text = this.add
-      .text(this.cashPoint.x, this.cashPoint.y, `${amount}$`, {
-        fontFamily: "Alphabeta",
-        fontSize: "32px",
-        fill: "#000"
-      })
-      .setOrigin(0.5, 0.5);
-
-    this.add.tween({
-      targets: [text],
-      alpha: 0,
-      duration: 1000,
-      onComplete: () => text.destroy()
-    });
-
-    GameState.update(state => {
-      state.balance += amount;
-      return state;
-    });
-    this.balanceText.setText(`${GameState.get().balance}$`);
   }
 }
