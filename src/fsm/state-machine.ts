@@ -1,6 +1,7 @@
 export interface State {
   enter: () => void;
   update: (time: number, dt: number) => void;
+  exit: () => void;
 }
 
 type StateMapT = {
@@ -10,6 +11,7 @@ type StateMapT = {
 class EmptyState implements State {
   enter() {}
   update(time: number, dt: number) {}
+  exit() {}
 }
 
 export default class StateMachine {
@@ -30,6 +32,7 @@ export default class StateMachine {
   }
 
   changeTo(state: string) {
+    this.current.exit();
     this.current = this.states[state];
     this.current.enter();
   }

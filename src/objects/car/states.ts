@@ -17,6 +17,8 @@ export class Enter implements State {
 
   enter() {}
 
+  exit() {}
+
   update(time: number, dt: number) {
     const elapsedSeconds = dt / 1000;
     const distance = (carSpeed * elapsedSeconds) / this.length;
@@ -44,6 +46,8 @@ export class Parked implements State {
     this.spend(10);
   }
 
+  exit() {}
+
   update(time: number, dt: number) {
     this.t += dt;
 
@@ -66,6 +70,8 @@ export class Exit implements State {
   }
 
   enter() {}
+
+  exit() {}
 
   update(time: number, dt: number) {
     const elapsedSeconds = dt / 1000;
