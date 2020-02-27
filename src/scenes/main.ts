@@ -1,13 +1,13 @@
 import Phaser from "phaser";
-import Car from "../objects/car";
-import Spawn from "../objects/spawn";
+import Car from "../entities/car";
+import Spawn from "../entities/spawn";
 import paths from "../graphics/paths";
 import { notNull } from "../util/value";
 import tilemapResource from "../static/outdoor.json";
 import tilesetResource from "../static/tilemap.png";
 import texturesAtlas from "../static/textures.json";
 import "../static/textures.png";
-import ParkingLot from "../objects/parking-lot";
+import ParkingLot from "../entities/parking-lot";
 
 const scene: Phaser.Types.Scenes.SettingsConfig = {
   active: false,
