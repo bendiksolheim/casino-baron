@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import GameState, { ListenerT, GameStateT } from "../game-state";
+import GameState, { ListenerT, GameStateT } from "../engine/game-state";
 import tilemapResource from "../static/outdoor.json";
 import { GameObjectWithLocation, findObject } from "../util/phaser";
 import { decimalGroup } from "../util/number";

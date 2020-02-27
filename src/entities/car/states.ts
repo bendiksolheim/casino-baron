@@ -1,7 +1,7 @@
 import { State } from "../../fsm/state-machine";
 import Car from "../car/";
 import ParkingLot from "entities/parking-lot";
-import GameState from "../../game-state";
+import GameState from "../../engine/game-state";
 
 const carSpeed = 100;
 
