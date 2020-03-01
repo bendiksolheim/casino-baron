@@ -8,10 +8,12 @@ export interface ListenerT {
 
 export type GameStateT = {
   balance: number;
+  time: number;
 };
 
 const initialState: GameStateT = {
-  balance: 1000
+  balance: 1000,
+  time: 0
 };
 
 let listeners: ListenerT[] = [];
