@@ -32,7 +32,8 @@ module.exports = (env, { mode } = { mode: "development" }) => ({
   },
   resolve: {
     extensions: [".js", ".ts"],
-    mainFiles: ["index"]
+    mainFiles: ["index"],
+    modules: [path.resolve(__dirname, "src"), "node_modules"]
   },
   plugins: [
     new HtmlWebpackPlugin({

@@ -1,7 +1,7 @@
 import Phaser from "phaser";
-import { getPath, findObject, GameObjectWithLocation } from "../../util/phaser";
-import { range } from "../../util/array";
-import { randomFrom } from "../../util/random";
+import { getPath, findObject, GameObjectWithLocation } from "util/phaser";
+import { range } from "util/array";
+import { randomFrom } from "util/random";
 import Car from "entities/car";
 
 type ParkedCar = Car | null;

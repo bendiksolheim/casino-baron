@@ -1,8 +1,8 @@
 import Phaser from "phaser";
-import GameState, { ListenerT, GameStateT } from "../engine/game-state";
-import tilemapResource from "../static/outdoor.json";
-import { GameObjectWithLocation, findObject } from "../util/phaser";
-import { decimalGroup } from "../util/number";
+import GameState, { ListenerT, GameStateT } from "engine/game-state";
+import tilemapResource from "static/outdoor.json";
+import { GameObjectWithLocation, findObject } from "util/phaser";
+import { decimalGroup } from "util/number";
 
 const config: Phaser.Types.Scenes.SettingsConfig = {
   active: true,

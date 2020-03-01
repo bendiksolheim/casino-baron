@@ -1,9 +1,9 @@
 import Phaser from "phaser";
-import Car from "../car";
-import { getPath } from "../../util/phaser";
-import { random, randomAround } from "../../util/random";
-import { findObject } from "../../util/phaser";
-import { Enter, Parked, Exit } from "../car/states";
+import Car from "entities/car";
+import { getPath } from "util/phaser";
+import { random, randomAround } from "util/random";
+import { findObject } from "util/phaser";
+import { Enter, Parked, Exit } from "entities/car/states";
 import ParkingLot from "entities/parking-lot";
 
 enum Path {
