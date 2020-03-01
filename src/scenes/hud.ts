@@ -3,6 +3,14 @@ import GameState, { ListenerT, GameStateT } from "engine/game-state";
 import tilemapResource from "static/outdoor.json";
 import { GameObjectWithLocation, findObject } from "util/phaser";
 import { decimalGroup } from "util/number";
+import Date from "util/date";
+import Time from "engine/time";
+
+const textStyle = {
+  fontFamily: "Alphabeta",
+  fontSize: "24px",
+  fill: "#000"
+};
 
 const config: Phaser.Types.Scenes.SettingsConfig = {
   active: true,
@@ -13,6 +21,7 @@ const config: Phaser.Types.Scenes.SettingsConfig = {
 export default class Hud extends Phaser.Scene implements ListenerT {
   private cashPoint!: GameObjectWithLocation;
   private balanceText!: Phaser.GameObjects.Text;
+  private dateText!: Phaser.GameObjects.Text;
 
   constructor() {
     super(config);
@@ -38,16 +47,19 @@ export default class Hud extends Phaser.Scene implements ListenerT {
         width - 10,
         height - 10,
         `${decimalGroup(GameState.get().balance)}$`,
-        {
-          fontFamily: "Alphabeta",
-          fontSize: "24px",
-          fill: "#000"
-        }
+        textStyle
       )
       .setOrigin(1.0, 1.0);
+
+    this.dateText = this.add
+      .text(10, height - 10, `${Date.formatDate(Time.getDate())}`, textStyle)
+      .setOrigin(0.0, 1.0);
   }
 
-  update() {}
+  update(time: number, delta: number) {
+    Time.tick(delta);
+    this.dateText.setText(Date.formatDate(Time.getDate()));
+  }
 
   stateChanged(newState: GameStateT) {
     this.balanceText.setText(`${decimalGroup(newState.balance)}$`);
