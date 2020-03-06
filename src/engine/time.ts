@@ -5,6 +5,7 @@ import GameState from "engine/game-state";
  * Based on the calculation that 30 real life days are 20 in game minutes
  */
 const factor = 2141;
+const millisecondsInDay = 1000 * 60 * 60 * 24;
 
 let time = GameState.get().time;
 
@@ -16,6 +17,9 @@ function tick(ms: number): void {
 function get(): number {
   return time;
 }
+
+function getTruncated(): number {
+  return time - (time % millisecondsInDay);
 }
 
 function getDate(): Date {
@@ -25,5 +29,6 @@ function getDate(): Date {
 export default {
   tick,
   get,
+  getTruncated,
   getDate
 };
