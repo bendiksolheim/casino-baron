@@ -5,6 +5,7 @@ import { GameObjectWithLocation, findObject } from "util/phaser";
 import { decimalGroup } from "util/number";
 import Date from "util/date";
 import Time from "engine/time";
+import "engine/expenses";
 import Text from "entities/text";
 
 const textStyle = {
