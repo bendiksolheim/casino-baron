@@ -2,8 +2,8 @@ import format from "date-fns/fp/format";
 
 const formatter = format("MMMM do, yyyy");
 
-function formatDate(date: Date): string {
-  return formatter(date);
+function formatDate(date: number): string {
+  return formatter(new Date(date));
 }
 
 export default {

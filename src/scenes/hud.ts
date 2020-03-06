@@ -22,7 +22,7 @@ const config: Phaser.Types.Scenes.SettingsConfig = {
 export default class Hud extends Phaser.Scene implements ListenerT {
   private cashPoint!: GameObjectWithLocation;
   private balanceText!: Text<number>;
-  private dateText!: Phaser.GameObjects.Text;
+  private dateText!: Text<number>;
 
   constructor() {
     super(config);
@@ -51,14 +51,13 @@ export default class Hud extends Phaser.Scene implements ListenerT {
       n => `${decimalGroup(n)}$`
     ).transformText(text => text.setOrigin(1.0, 1.0));
 
-    this.dateText = this.add
-      .text(10, height - 10, `${Date.formatDate(Time.getDate())}`, textStyle)
-      .setOrigin(0.0, 1.0);
+    this.dateText = new Text(this, 10, height - 10, Time.getTruncated(), time =>
+      Date.formatDate(time)
+    ).transformText(text => text.setOrigin(0.0, 1.0));
   }
 
   update(time: number, delta: number) {
     Time.tick(delta);
-    this.dateText.setText(Date.formatDate(Time.getDate()));
   }
 
   stateChanged(newState: GameStateT) {
@@ -78,5 +77,7 @@ export default class Hud extends Phaser.Scene implements ListenerT {
         onComplete: () => text.destroy()
       });
     }
+
+    this.dateText.setValue(Time.getTruncated());
   }
 }
