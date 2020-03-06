@@ -4,7 +4,7 @@ import GameState from "engine/game-state";
  * Amount of real time milliseconds per game millisecond.
  * Based on the calculation that 30 real life days are 20 in game minutes
  */
-const factor = 2141;
+const factor = 4282;
 const millisecondsInDay = 1000 * 60 * 60 * 24;
 
 let time = GameState.get().time;
