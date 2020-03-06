@@ -14,7 +14,8 @@ function tick(ms: number): void {
 }
 
 function get(): number {
-  return factor;
+  return time;
+}
 }
 
 function getDate(): Date {
