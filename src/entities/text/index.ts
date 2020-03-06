@@ -33,7 +33,6 @@ class Text<T> {
   }
 
   setValue(value: T): boolean {
-    console.log(value, this.value);
     if (value !== this.value) {
       this.value = value;
       this.text.setText(this.transformer(value));
