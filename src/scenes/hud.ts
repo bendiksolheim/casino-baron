@@ -5,6 +5,7 @@ import { GameObjectWithLocation, findObject } from "util/phaser";
 import { decimalGroup } from "util/number";
 import Date from "util/date";
 import Time from "engine/time";
+import Text from "entities/text";
 
 const textStyle = {
   fontFamily: "Alphabeta",
@@ -20,7 +21,7 @@ const config: Phaser.Types.Scenes.SettingsConfig = {
 
 export default class Hud extends Phaser.Scene implements ListenerT {
   private cashPoint!: GameObjectWithLocation;
-  private balanceText!: Phaser.GameObjects.Text;
+  private balanceText!: Text<number>;
   private dateText!: Phaser.GameObjects.Text;
 
   constructor() {
@@ -42,14 +43,13 @@ export default class Hud extends Phaser.Scene implements ListenerT {
       .roundRectangle(0, height, width, 40, 0, 0xcccccc)
       .setOrigin(0.0, 1.0);
 
-    this.balanceText = this.add
-      .text(
-        width - 10,
-        height - 10,
-        `${decimalGroup(GameState.get().balance)}$`,
-        textStyle
-      )
-      .setOrigin(1.0, 1.0);
+    this.balanceText = new Text(
+      this,
+      width - 10,
+      height - 10,
+      GameState.get().balance,
+      n => `${decimalGroup(n)}$`
+    ).transformText(text => text.setOrigin(1.0, 1.0));
 
     this.dateText = this.add
       .text(10, height - 10, `${Date.formatDate(Time.getDate())}`, textStyle)
@@ -62,20 +62,21 @@ export default class Hud extends Phaser.Scene implements ListenerT {
   }
 
   stateChanged(newState: GameStateT) {
-    this.balanceText.setText(`${decimalGroup(newState.balance)}$`);
-    const text = this.add
-      .text(this.cashPoint.x, this.cashPoint.y, `$`, {
-        fontFamily: "Alphabeta",
-        fontSize: "32px",
-        fill: "#000"
-      })
-      .setOrigin(0.5, 0.5);
+    if (this.balanceText.setValue(newState.balance)) {
+      const text = this.add
+        .text(this.cashPoint.x, this.cashPoint.y, `$`, {
+          fontFamily: "Alphabeta",
+          fontSize: "32px",
+          fill: "#000"
+        })
+        .setOrigin(0.5, 0.5);
 
-    this.add.tween({
-      targets: [text],
-      alpha: 0,
-      duration: 1000,
-      onComplete: () => text.destroy()
-    });
+      this.add.tween({
+        targets: [text],
+        alpha: 0,
+        duration: 1000,
+        onComplete: () => text.destroy()
+      });
+    }
   }
 }
