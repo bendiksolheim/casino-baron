@@ -10,6 +10,7 @@ let time = GameState.get().time;
 
 function tick(ms: number): void {
   time = time + ms * factor;
+  GameState.update(state => ({ ...state, time }));
 }
 
 function get(): number {
