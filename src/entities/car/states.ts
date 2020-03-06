@@ -3,7 +3,7 @@ import Car from "entities/car/";
 import ParkingLot from "entities/parking-lot";
 import GameState from "engine/game-state";
 
-const carSpeed = 100;
+const carSpeed = 200;
 
 export class Enter implements State {
   private car: Car;
