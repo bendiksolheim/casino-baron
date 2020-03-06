@@ -12,8 +12,8 @@ export type GameStateT = {
 };
 
 const initialState: GameStateT = {
-  balance: 1000,
-  time: 0
+  balance: 0,
+  time: 946684800000
 };
 
 let listeners: ListenerT[] = [];
