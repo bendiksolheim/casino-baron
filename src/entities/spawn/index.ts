@@ -5,6 +5,7 @@ import { random, randomAround } from "util/random";
 import { findObject } from "util/phaser";
 import { Enter, Parked, Exit } from "entities/car/states";
 import ParkingLot from "entities/parking-lot";
+import GameConstants from "engine/game-constants";
 
 enum Path {
   Enter,
@@ -22,7 +23,7 @@ export default class Spawn {
   private next: number = 0;
   private paths: PathMapT;
   private parkingLot: ParkingLot;
-  private spawnRate: number = 10_000;
+  private spawnRate: number = 10_000 / GameConstants.gameSpeed;
 
   constructor(
     scene: Phaser.Scene,

@@ -2,8 +2,9 @@ import { State } from "fsm/state-machine";
 import Car from "entities/car/";
 import ParkingLot from "entities/parking-lot";
 import GameState from "engine/game-state";
+import GameConstants from "engine/game-constants";
 
-const carSpeed = 200;
+const carSpeed = GameConstants.carSpeed;
 
 export class Enter implements State {
   private car: Car;
