@@ -5,6 +5,7 @@ import Phaser from "phaser";
 import RexUIPlugin from "phaser3-rex-plugins/templates/ui/ui-plugin";
 import MainScene from "./scenes/main";
 import Hud from "./scenes/hud";
+import GameState from "engine/game-state";
 import "./static/alphbeta.ttf";
 
 type GameConfig = Phaser.Types.Core.GameConfig & {
@@ -44,6 +45,10 @@ const config: GameConfig = {
       }
     ]
   }
+};
+
+window.onbeforeunload = function(): void {
+  GameState.persist();
 };
 
 export const game = new Phaser.Game(config);

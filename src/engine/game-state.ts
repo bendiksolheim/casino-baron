@@ -26,15 +26,19 @@ function listen(listener: ListenerT): void {
 function update(updater: (oldState: GameStateT) => GameStateT): void {
   gameState = updater(gameState);
   listeners.forEach(listener => listener.stateChanged(gameState));
-  Storage.save(key, gameState);
 }
 
 function get(): GameStateT {
   return gameState;
 }
 
+function persist(): void {
+  Storage.save(key, gameState);
+}
+
 export default {
   listen,
   update,
-  get
+  get,
+  persist
 };
