@@ -7,7 +7,7 @@ const textStyle = {
 };
 
 class Text<T> {
-  private text: Phaser.GameObjects.Text;
+  text: Phaser.GameObjects.Text;
   private value: T;
   private transformer: (v: T) => string;
 
