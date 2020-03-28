@@ -12,7 +12,7 @@ class Expenses {
   }
 
   newMonth(): void {
-    GameState.update(state => ({ ...state, balance: state.balance - 100 }));
+    GameState.update(state => ({ ...state, balance: state.balance - 200 }));
   }
 
   stateChanged(newState: GameStateT): void {
