@@ -39,7 +39,7 @@
     "babel-polyfill": "^6.26.0",
     "date-fns": "^2.10.0",
     "phaser": "^3.22.0",
-    "phaser3-rex-plugins": "^1.1.8"
+    "phaser3-rex-plugins": "^1.1.79"
   },
   "browserslist": [
     "last 10 Firefox version"
